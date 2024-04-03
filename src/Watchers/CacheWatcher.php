@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace OpenTelemetry\Contrib\Instrumentation\Laravel\Watchers;
+namespace OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers;
 
 use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Cache\Events\CacheMissed;
 use Illuminate\Cache\Events\KeyForgotten;
 use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Date;
 use OpenTelemetry\API\Trace\Span;
 use OpenTelemetry\Context\Context;
 
@@ -50,13 +51,13 @@ class CacheWatcher extends Watcher
             'key' => $event->key,
             'tags' => json_encode($event->tags),
             'expires_at' => $ttl > 0
-                ? now()->addSeconds($ttl)->getTimestamp()
+                ? Date::now()->addSeconds($ttl)->getTimestamp()
                 : 'never',
             'expires_in_seconds' => $ttl > 0
                 ? $ttl
                 : 'never',
             'expires_in_human' => $ttl > 0
-                ? now()->addSeconds($ttl)->diffForHumans()
+                ? Date::now()->addSeconds($ttl)->diffForHumans()
                 : 'never',
         ]);
     }

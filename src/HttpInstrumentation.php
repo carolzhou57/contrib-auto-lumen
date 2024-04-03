@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTelemetry\Contrib\Instrumentation\Laravel;
+namespace OpenTelemetry\Contrib\Instrumentation\Lumen;
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;

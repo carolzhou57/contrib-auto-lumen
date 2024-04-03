@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use OpenTelemetry\Contrib\Instrumentation\Laravel\LaravelInstrumentation;
+use OpenTelemetry\Contrib\Instrumentation\Lumen\LumenInstrumentation;
 use OpenTelemetry\SDK\Sdk;
 
-if (class_exists(Sdk::class) && Sdk::isInstrumentationDisabled(LaravelInstrumentation::NAME) === true) {
+if (class_exists(Sdk::class) && Sdk::isInstrumentationDisabled(LumenInstrumentation::NAME) === true) {
     return;
 }
 
@@ -15,4 +15,4 @@ if (extension_loaded('opentelemetry') === false) {
     return;
 }
 
-LaravelInstrumentation::register();
+LumenInstrumentation::register();

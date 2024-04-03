@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OpenTelemetry\Contrib\Instrumentation\Laravel\Watchers;
+namespace OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers;
 
 use Illuminate\Contracts\Foundation\Application;
 

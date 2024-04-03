@@ -1,7 +1,7 @@
 {
-  "name": "open-telemetry/opentelemetry-auto-laravel",
-  "description": "OpenTelemetry auto-instrumentation for Laravel",
-  "keywords": ["opentelemetry", "otel", "open-telemetry", "tracing", "laravel", "instrumentation"],
+  "name": "open-telemetry/opentelemetry-auto-lumen",
+  "description": "OpenTelemetry auto-instrumentation for Lumen",
+  "keywords": ["opentelemetry", "otel", "open-telemetry", "tracing", "lumen", "instrumentation"],
   "type": "library",
   "homepage": "https://opentelemetry.io/docs/php",
   "readme": "./README.md",
@@ -11,29 +11,14 @@
     "php": "^8.0",
     "ext-json": "*",
     "ext-opentelemetry": "*",
-    "laravel/framework": ">=6.0",
+    "illuminate/routing": "8.x-dev",
+    "laravel/lumen-framework": "^8.0",
     "open-telemetry/api": "^1.0",
     "open-telemetry/sem-conv": "^1.23"
   },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3",
-    "guzzlehttp/guzzle": "*",
-    "laravel/tinker": "*",
-    "nunomaduro/collision": "*",
-    "open-telemetry/sdk": "^1.0",
-    "orchestra/testbench": ">=4.0",
-    "phan/phan": "^5.0",
-    "php-http/mock-client": "*",
-    "phpstan/phpstan": "^1.1",
-    "phpstan/phpstan-phpunit": "^1.0",
-    "phpunit/phpunit": "^9.5",
-    "psalm/plugin-phpunit": "^0.18.4",
-    "spatie/laravel-ignition": "*",
-    "vimeo/psalm": "^5.0"
-  },
   "autoload": {
     "psr-4": {
-      "OpenTelemetry\\Contrib\\Instrumentation\\Laravel\\": "src/"
+      "OpenTelemetry\\Contrib\\Instrumentation\\Lumen\\": "src/"
     },
     "files": [
       "_register.php"
@@ -41,7 +26,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "OpenTelemetry\\Tests\\Contrib\\Instrumentation\\Laravel\\": "tests/"
+      "OpenTelemetry\\Tests\\Contrib\\Instrumentation\\Lumen\\": "tests/"
     }
   },
   "config": {
