@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen;
 
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Http\Request;
+use Laravel\Lumen\Http\Request as LumenRequest;
 use OpenTelemetry\API\Globals;
 use OpenTelemetry\API\Instrumentation\CachedInstrumentation;
 use OpenTelemetry\API\Trace\Span;
@@ -13,20 +12,23 @@ use OpenTelemetry\API\Trace\SpanInterface;
 use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\API\Trace\StatusCode;
 use OpenTelemetry\Context\Context;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use function OpenTelemetry\Instrumentation\hook;
 use OpenTelemetry\SemConv\TraceAttributes;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
+use Laravel\Lumen\Application;
 
 class HttpInstrumentation
 {
     public static function register(CachedInstrumentation $instrumentation): void
     {
+        $request = LumenRequest::capture();
+
         hook(
-            Kernel::class,
-            'handle',
-            pre: static function (Kernel $kernel, array $params, string $class, string $function, ?string $filename, ?int $lineno) use ($instrumentation) {
-                $request = ($params[0] instanceof Request) ? $params[0] : null;
+            Application::class,
+            'run',
+            pre: static function (Application $app, array $params, string $class, string $function, ?string $filename, ?int $lineno) use ($instrumentation, $request) {
                 /** @psalm-suppress ArgumentTypeCoercion */
                 $builder = $instrumentation->tracer()
                     ->spanBuilder(sprintf('%s', $request?->method() ?? 'unknown'))
@@ -60,7 +62,7 @@ class HttpInstrumentation
 
                 return [$request];
             },
-            post: static function (Kernel $kernel, array $params, ?Response $response, ?Throwable $exception) {
+            post: static function (Application $app, array $params, ?Response $response, ?Throwable $exception) {
                 $scope = Context::storage()->scope();
                 if (!$scope) {
                     return;
@@ -101,7 +103,7 @@ class HttpInstrumentation
         );
     }
 
-    private static function httpTarget(Request $request): string
+    private static function httpTarget(SymfonyRequest $request): string
     {
         $query = $request->getQueryString();
         $question = $request->getBaseUrl() . $request->getPathInfo() === '/' ? '/?' : '?';
@@ -109,7 +111,7 @@ class HttpInstrumentation
         return $query ? $request->path() . $question . $query : $request->path();
     }
 
-    private static function httpHostName(Request $request): string
+    private static function httpHostName(SymfonyRequest $request): string
     {
         if (method_exists($request, 'host')) {
             return $request->host();

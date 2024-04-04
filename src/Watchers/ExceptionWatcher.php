@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers;
 
-use Illuminate\Contracts\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Log\Events\MessageLogged;
 use OpenTelemetry\API\Trace\Span;
 use OpenTelemetry\API\Trace\StatusCode;
@@ -25,7 +25,7 @@ class ExceptionWatcher extends Watcher
     public function recordException(MessageLogged $log): void
     {
         if (! isset($log->context['exception']) ||
-        ! $log->context['exception'] instanceof Throwable) {
+            ! $log->context['exception'] instanceof Throwable) {
             return;
         }
 

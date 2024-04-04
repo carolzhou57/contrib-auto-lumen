@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen;
 
-use Illuminate\Contracts\Foundation\Application;
+use Laravel\Lumen\Application;
 use OpenTelemetry\API\Instrumentation\CachedInstrumentation;
 use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\CacheWatcher;
 use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\ClientRequestWatcher;
 use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\ExceptionWatcher;
 use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\LogWatcher;
 use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\QueryWatcher;
-use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\RequestWatcher;
 use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\Watcher;
 use function OpenTelemetry\Instrumentation\hook;
 use Throwable;
@@ -38,7 +37,6 @@ class LumenInstrumentation
                 self::registerWatchers($application, new ExceptionWatcher());
                 self::registerWatchers($application, new LogWatcher());
                 self::registerWatchers($application, new QueryWatcher($instrumentation));
-                self::registerWatchers($application, new RequestWatcher());
             },
         );
 

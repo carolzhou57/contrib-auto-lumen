@@ -8,7 +8,7 @@ use Illuminate\Cache\Events\CacheHit;
 use Illuminate\Cache\Events\CacheMissed;
 use Illuminate\Cache\Events\KeyForgotten;
 use Illuminate\Cache\Events\KeyWritten;
-use Illuminate\Contracts\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Support\Facades\Date;
 use OpenTelemetry\API\Trace\Span;
 use OpenTelemetry\Context\Context;

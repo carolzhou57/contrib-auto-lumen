@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers;
 
-use Illuminate\Contracts\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Str;
 use OpenTelemetry\API\Instrumentation\CachedInstrumentation;
