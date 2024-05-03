@@ -15,10 +15,10 @@
     "laravel/lumen-framework": "^8.0",
     "open-telemetry/api": "^1.0",
     "open-telemetry/exporter-otlp": "^1.0",
+    "open-telemetry/extension-propagator-b3": "^1.0@dev",
     "open-telemetry/opentelemetry-auto-psr15": "dev-main",
     "open-telemetry/opentelemetry-auto-psr18": "dev-main",
     "open-telemetry/opentelemetry-propagation-server-timing": "dev-main",
-    "open-telemetry/opentelemetry-propagation-traceresponse": "dev-main",
     "open-telemetry/sem-conv": "^1.23"
   },
   "autoload": {
