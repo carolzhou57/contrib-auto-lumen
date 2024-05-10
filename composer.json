@@ -13,6 +13,7 @@
     "ext-opentelemetry": "*",
     "illuminate/routing": "^8.0",
     "laravel/lumen-framework": "^8.0",
+    "new999day/opentelemetry-auto-ext-amqp": "dev-main",
     "open-telemetry/api": "^1.0",
     "open-telemetry/exporter-otlp": "^1.0",
     "open-telemetry/extension-propagator-b3": "^1.0@dev",
