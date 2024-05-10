@@ -25,6 +25,10 @@ class HttpInstrumentation
     {
         $request = LumenRequest::capture();
 
+        if ($request->is('*/health-check/liveness', '*/health-check/readiness',)) {
+            return;
+        }
+
         hook(
             Application::class,
             'run',
