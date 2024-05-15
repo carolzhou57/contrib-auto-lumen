@@ -33,9 +33,11 @@ class HttpInstrumentation
             Application::class,
             'run',
             pre: static function (Application $app, array $params, string $class, string $function, ?string $filename, ?int $lineno) use ($instrumentation, $request) {
+                $parsedUrl = collect(parse_url($request->url()));
+                $method = $request?->method();
                 /** @psalm-suppress ArgumentTypeCoercion */
                 $builder = $instrumentation->tracer()
-                    ->spanBuilder(sprintf('%s', $request?->method() ?? 'unknown'))
+                    ->spanBuilder($method ? $request?->method() . ' ' . $parsedUrl['path'] : '')
                     ->setSpanKind(SpanKind::KIND_SERVER)
                     ->setAttribute(TraceAttributes::CODE_FUNCTION, $function)
                     ->setAttribute(TraceAttributes::CODE_NAMESPACE, $class)
@@ -73,6 +75,8 @@ class HttpInstrumentation
                 }
                 $scope->detach();
                 $span = Span::fromContext($scope->context());
+                $span->setAttribute('trace_id', $span->getContext()->getTraceId());
+
                 if ($exception) {
                     $span->recordException($exception, [TraceAttributes::EXCEPTION_ESCAPED => true]);
                     $span->setStatus(StatusCode::STATUS_ERROR, $exception->getMessage());
