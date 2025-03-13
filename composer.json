@@ -8,18 +8,16 @@
   "license": "Apache-2.0",
   "minimum-stability": "dev",
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "ext-json": "*",
     "ext-opentelemetry": "*",
-    "illuminate/routing": "^8.0",
-    "laravel/lumen-framework": "^8.0",
+    "illuminate/routing": "^8.1",
+    "laravel/lumen-framework": "^8.1",
     "new999day/opentelemetry-auto-ext-amqp": "dev-main",
     "open-telemetry/api": "^1.0",
     "open-telemetry/exporter-otlp": "^1.0",
     "open-telemetry/extension-propagator-b3": "^1.0@dev",
-    "open-telemetry/opentelemetry-auto-psr15": "dev-main",
-    "open-telemetry/opentelemetry-auto-psr18": "dev-main",
-    "open-telemetry/opentelemetry-propagation-server-timing": "dev-main",
+    "open-telemetry/opentelemetry-propagation-server-timing": "0.0.4",
     "open-telemetry/sem-conv": "^1.23"
   },
   "autoload": {
@@ -39,7 +37,8 @@
     "lock": false,
     "sort-packages": true,
     "allow-plugins": {
-      "php-http/discovery": false
+      "php-http/discovery": false,
+      "tbachert/spi": true
     }
   }
 }

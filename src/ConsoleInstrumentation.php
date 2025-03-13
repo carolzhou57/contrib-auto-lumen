@@ -17,6 +17,8 @@ use Throwable;
 
 class ConsoleInstrumentation
 {
+    const RABBITMQ_COMMAND = 'rabbitmq-consume';
+
     public static function register(CachedInstrumentation $instrumentation): void
     {
         hook(
@@ -64,12 +66,27 @@ class ConsoleInstrumentation
             'execute',
             pre: static function (Command $command, array $params, string $class, string $function, ?string $filename, ?int $lineno) use ($instrumentation) {
                 /** @psalm-suppress ArgumentTypeCoercion */
-                $builder = $instrumentation->tracer()
-                    ->spanBuilder(sprintf('Command %s', $command->getName() ?: 'unknown'))
-                    ->setAttribute(TraceAttributes::CODE_FUNCTION, $function)
-                    ->setAttribute(TraceAttributes::CODE_NAMESPACE, $class)
-                    ->setAttribute(TraceAttributes::CODE_FILEPATH, $filename)
-                    ->setAttribute(TraceAttributes::CODE_LINENO, $lineno);
+
+                if ($command?->getName() === self::RABBITMQ_COMMAND) {
+                    $payload = isset($params[0]) ? (string)$params[0]->body : '';
+                    $exchangeName = $params[1];
+                    $routingKey = $params[2];
+
+                    $builder = $instrumentation->tracer()
+                        ->spanBuilder($command->getName() . ' ' . $exchangeName . ' ' . $routingKey)
+                        ->setAttribute(TraceAttributes::CODE_FUNCTION, $function)
+                        ->setAttribute(TraceAttributes::CODE_NAMESPACE, $class)
+                        ->setAttribute(TraceAttributes::CODE_FILEPATH, $filename)
+                        ->setAttribute(TraceAttributes::CODE_LINENO, $lineno);
+                } else {
+                    $builder = $instrumentation->tracer()
+                        ->spanBuilder(sprintf('Command %s', $command->getName() ?: 'unknown'))
+                        ->setAttribute(TraceAttributes::CODE_FUNCTION, $function)
+                        ->setAttribute(TraceAttributes::CODE_NAMESPACE, $class)
+                        ->setAttribute(TraceAttributes::CODE_FILEPATH, $filename)
+                        ->setAttribute(TraceAttributes::CODE_LINENO, $lineno);
+                }
+
 
                 $parent = Context::getCurrent();
                 $span = $builder->startSpan();
