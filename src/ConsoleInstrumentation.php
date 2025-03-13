@@ -26,10 +26,10 @@ class ConsoleInstrumentation
             'handle',
             pre: static function (Kernel $kernel, array $params, string $class, string $function, ?string $filename, ?int $lineno) use ($instrumentation) {
                 /** @psalm-suppress ArgumentTypeCoercion */
-                $commandName = $params[1];
+                $commandName = $params[1] ?? '';
 
                 if ($commandName === self::RABBITMQ_COMMAND) {
-                    $exchangeName = $params[2];
+                    $exchangeName = $params[2] ?? '';
                     $routingKey = explode('--queue=', $params[3])[1] ?? '';
 
                     $builder = $instrumentation->tracer()
@@ -88,10 +88,10 @@ class ConsoleInstrumentation
             'execute',
             pre: static function (Command $command, array $params, string $class, string $function, ?string $filename, ?int $lineno) use ($instrumentation) {
                 /** @psalm-suppress ArgumentTypeCoercion */
-                $commandName = $params[1];
+                $commandName = $params[1] ?? '';
 
                 if ($commandName === self::RABBITMQ_COMMAND) {
-                    $exchangeName = $params[2];
+                    $exchangeName = $params[2] ?? '';
                     $routingKey = explode('--queue=', $params[3])[1] ?? '';
 
                     $builder = $instrumentation->tracer()
