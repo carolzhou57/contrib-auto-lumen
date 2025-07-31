@@ -1,5 +1,5 @@
 {
-  "name": "new999day/opentelemetry-auto-lumen",
+  "name": "carolzhou57/opentelemetry-auto-lumen",
   "description": "OpenTelemetry auto-instrumentation for Lumen",
   "keywords": ["opentelemetry", "otel", "open-telemetry", "tracing", "lumen", "instrumentation"],
   "type": "library",
