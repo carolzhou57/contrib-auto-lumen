@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers;
-echo "HEllo QueryWatcher.php"
+echo "HEllo QueryWatcher.php";
 use Laravel\Lumen\Application;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Str;
