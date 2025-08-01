@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen;
-echo "Hello HttpInstrumentation.php"
+echo "Hello HttpInstrumentation.php";
 use Laravel\Lumen\Http\Request as LumenRequest;
 use OpenTelemetry\API\Globals;
 use OpenTelemetry\API\Instrumentation\CachedInstrumentation;
