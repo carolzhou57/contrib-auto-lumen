@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen;
-
+echo "Hello LumenInstrumentation.php"
 use Laravel\Lumen\Application;
 use OpenTelemetry\API\Instrumentation\CachedInstrumentation;
 use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\CacheWatcher;
