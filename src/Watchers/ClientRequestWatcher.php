@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers;
-echo "hello clientrequestwatch"
+echo "hello clientrequestwatch";
 use Laravel\Lumen\Application;
 use Illuminate\Http\Client\Events\ConnectionFailed;
 use Illuminate\Http\Client\Events\RequestSending;
