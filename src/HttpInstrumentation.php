@@ -47,13 +47,14 @@ class HttpInstrumentation
             'run',
             pre: static function (Application $app, array $params, string $class, string $function, ?string $filename, ?int $lineno) use ($instrumentation, $request) {
                 $parsedUrl = collect(parse_url($request->url()));
-                echo $parsedUrl;
+                
                 $method = $request?->method();
                 /** @psalm-suppress ArgumentTypeCoercion */
+                echo $method;
                 $path = $parsedUrl['path'] ?? '/';
-
+                echo $path;
                 $spanName = $method ? "{$method} {$path}" : '';
-
+                echo $spanName;
                 $builder = $instrumentation->tracer()
                     ->spanBuilder($spanName)
                     ->setSpanKind(SpanKind::KIND_SERVER)
@@ -62,6 +63,9 @@ class HttpInstrumentation
                     ->setAttribute(TraceAttributes::CODE_FILEPATH, $filename ?? 'unknown')
                     ->setAttribute(TraceAttributes::CODE_LINENO, $lineno ?? 0);
                 $parent = Context::getCurrent();
+                $traceId = $parent->getTraceId();
+                $spanId = $parent->getSpanId();
+                echo "parent Trace ID: {$traceId}, parent Span ID: {$spanId}";
                 if ($request) {
                     $parent = Globals::propagator()->extract($request, HeadersPropagator::instance());
                     $span = $builder
