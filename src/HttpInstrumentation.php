@@ -18,7 +18,7 @@ use OpenTelemetry\SemConv\TraceAttributes;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use Laravel\Lumen\Application;
-use OpenTelemetry\Context\Context;
+
 
 class HttpInstrumentation
 {
