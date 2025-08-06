@@ -83,6 +83,9 @@ class HttpInstrumentation
                     $span = $builder->startSpan();
                 }
                 Context::storage()->attach($span->storeInContext($parent));
+                $traceId = $span->getContext()->getTraceId();
+                $spanId = $span->getContext()->getSpanId();
+                echo "Trace ID: {$traceId}, Span ID: {$spanId}";
 
                 return [$request];
             },
@@ -94,9 +97,7 @@ class HttpInstrumentation
                 $scope->detach();
                 $span = Span::fromContext($scope->context());
                 $span->setAttribute('trace_id', $span->getContext()->getTraceId());
-                $traceId = $span->getContext()->getTraceId();
-                $spanId = $span->getContext()->getSpanId();
-                echo "Trace ID: {$traceId}, Span ID: {$spanId}";
+
                 
                 if ($exception) {
                     $span->recordException($exception, [TraceAttributes::EXCEPTION_ESCAPED => true]);
