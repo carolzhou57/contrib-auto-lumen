@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace OpenTelemetry\Contrib\Instrumentation\Lumen;
-echo "Hello HttpInstrumentation.php";
+echo "!!!Hello HttpInstrumentation.php!!!";
 use Laravel\Lumen\Http\Request as LumenRequest;
 use OpenTelemetry\API\Globals;
 use OpenTelemetry\API\Instrumentation\CachedInstrumentation;
@@ -46,6 +46,7 @@ class HttpInstrumentation
             'run',
             pre: static function (Application $app, array $params, string $class, string $function, ?string $filename, ?int $lineno) use ($instrumentation, $request) {
                 $parsedUrl = collect(parse_url($request->url()));
+                echo $parsedUrl;
                 $method = $request?->method();
                 /** @psalm-suppress ArgumentTypeCoercion */
                 $path = $parsedUrl['path'] ?? '/';
