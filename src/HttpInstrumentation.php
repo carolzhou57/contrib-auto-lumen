@@ -25,7 +25,7 @@ class HttpInstrumentation
     public static function register(CachedInstrumentation $instrumentation): void
     {
         $request = LumenRequest::capture();
-
+        echo $request;
         // skip health-check routes
         //if ($request->is(
           //  '*/health-check/liveness',
