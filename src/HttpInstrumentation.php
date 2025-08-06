@@ -50,7 +50,7 @@ class HttpInstrumentation
                 
                 $method = $request?->method();
                 /** @psalm-suppress ArgumentTypeCoercion */
-                echo "method: {$method}";
+
                 $path = $parsedUrl['path'] ?? '/';
                 
                 $spanName = $method ? "{$method} {$path}" : '';
@@ -63,11 +63,12 @@ class HttpInstrumentation
                     ->setAttribute(TraceAttributes::CODE_FILEPATH, $filename ?? 'unknown')
                     ->setAttribute(TraceAttributes::CODE_LINENO, $lineno ?? 0);
                 $parent = Context::getCurrent();
-                $traceId = $parent->getTraceId();
-                $spanId = $parent->getSpanId();
-                echo "parent Trace ID: {$traceId}, parent Span ID: {$spanId}";
+
                 if ($request) {
                     $parent = Globals::propagator()->extract($request, HeadersPropagator::instance());
+                    $traceId = $parent->getTraceId();
+                    $spanId = $parent->getSpanId();
+                    echo "parent Trace ID: {$traceId}, parent Span ID: {$spanId}";
                     $span = $builder
                         ->setParent($parent)
                         ->setAttribute(TraceAttributes::URL_FULL, $request->fullUrl())
