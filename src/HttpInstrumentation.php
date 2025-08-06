@@ -54,7 +54,7 @@ class HttpInstrumentation
                 $path = $parsedUrl['path'] ?? '/';
                 
                 $spanName = $method ? "{$method} {$path}" : '';
-                echo "Spanname:!! {$spanName}!!";
+
                 $builder = $instrumentation->tracer()
                     ->spanBuilder($spanName)
                     ->setSpanKind(SpanKind::KIND_SERVER)
@@ -66,9 +66,7 @@ class HttpInstrumentation
 
                 if ($request) {
                     $parent = Globals::propagator()->extract($request, HeadersPropagator::instance());
-                    $traceId = $parent->getTraceId();
-                    $spanId = $parent->getSpanId();
-                    echo "parent Trace ID: {$traceId}, parent Span ID: {$spanId}";
+
                     $span = $builder
                         ->setParent($parent)
                         ->setAttribute(TraceAttributes::URL_FULL, $request->fullUrl())
@@ -88,9 +86,10 @@ class HttpInstrumentation
                     $span = $builder->startSpan();
                 }
                 Context::storage()->attach($span->storeInContext($parent));
-                $traceId = $span->getContext()->getTraceId();
-                $spanId = $span->getContext()->getSpanId();
-                echo "Trace ID: {$traceId}, Span ID: {$spanId}";
+                $scope = $span->activate();
+                $currentSpan = Span::fromContext(Context::getCurrent());
+                echo 'Trace ID: ' . $currentSpan->getContext()->getTraceId();
+                echo ' | Span ID: ' . $currentSpan->getContext()->getSpanId();
 
                 return [$request];
             },
