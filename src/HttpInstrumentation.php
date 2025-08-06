@@ -18,6 +18,7 @@ use OpenTelemetry\SemConv\TraceAttributes;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use Laravel\Lumen\Application;
+use OpenTelemetry\Context\Context;
 
 class HttpInstrumentation
 {
@@ -93,7 +94,10 @@ class HttpInstrumentation
                 $scope->detach();
                 $span = Span::fromContext($scope->context());
                 $span->setAttribute('trace_id', $span->getContext()->getTraceId());
-
+                $traceId = $span->getContext()->getTraceId();
+                $spanId = $span->getContext()->getSpanId();
+                echo "Trace ID: {$traceId}, Span ID: {$spanId}";
+                
                 if ($exception) {
                     $span->recordException($exception, [TraceAttributes::EXCEPTION_ESCAPED => true]);
                     $span->setStatus(StatusCode::STATUS_ERROR, $exception->getMessage());
@@ -122,6 +126,7 @@ class HttpInstrumentation
                         $prop->inject($response, ResponsePropagationSetter::instance(), $scope->context());
                     }
                 }
+
 
                 $span->end();
             }
