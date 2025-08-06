@@ -14,6 +14,9 @@ use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\QueryWatcher;
 use OpenTelemetry\Contrib\Instrumentation\Lumen\Watchers\Watcher;
 use function OpenTelemetry\Instrumentation\hook;
 use Throwable;
+use OpenTelemetry\Context\Context;
+
+
 
 class LumenInstrumentation
 {
@@ -42,5 +45,9 @@ class LumenInstrumentation
 
         ConsoleInstrumentation::register($instrumentation);
         HttpInstrumentation::register($instrumentation);
+        // Returns the active context
+        // If no context is active, the root context is returned
+        $context = Context::getCurrent();
+        echo $context;
     }
 }
