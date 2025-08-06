@@ -50,11 +50,11 @@ class HttpInstrumentation
                 
                 $method = $request?->method();
                 /** @psalm-suppress ArgumentTypeCoercion */
-                echo $method;
+                echo "method: {$method}";
                 $path = $parsedUrl['path'] ?? '/';
-                echo $path;
+                
                 $spanName = $method ? "{$method} {$path}" : '';
-                echo $spanName;
+                echo "Spanname:!! {$spanName}!!";
                 $builder = $instrumentation->tracer()
                     ->spanBuilder($spanName)
                     ->setSpanKind(SpanKind::KIND_SERVER)
