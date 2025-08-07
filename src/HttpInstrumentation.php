@@ -92,11 +92,12 @@ class HttpInstrumentation
                 return [$request];
             },
             post: static function (Application $app, array $params, ?Response $response, ?Throwable $exception) {
-                $scope = Context::storage()->scope();
-
                 $currentSpan = Span::fromContext(Context::getCurrent());
                 echo 'Trace ID: ' . $currentSpan->getContext()->getTraceId();
                 echo ' | Span ID: ' . $currentSpan->getContext()->getSpanId();
+                $scope = Context::storage()->scope();
+
+                
                 if (!$scope) {
                     return;
                 }
