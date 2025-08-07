@@ -26,14 +26,14 @@ class HttpInstrumentation
         $request = LumenRequest::capture();
 
         // skip health-check routes
-        //if ($request->is(
-          //  '*/health-check/liveness',
-          //  '*/health-check/readiness',
-          //  '*/health/alive',
-          //  '*/health/ready'
-        //)) {
-          //  return;
-        //}
+        if ($request->is(
+            '*/health-check/liveness',
+            '*/health-check/readiness',
+            '*/health/alive',
+            '*/health/ready'
+        )) {
+            return;
+        }
 
         // skip if X-B3-Sampled header = 0
         if ($request->hasHeader('X-B3-Sampled')
