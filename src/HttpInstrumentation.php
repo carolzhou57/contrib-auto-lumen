@@ -87,14 +87,16 @@ class HttpInstrumentation
                 }
                 Context::storage()->attach($span->storeInContext($parent));
                 $scope = $span->activate();
-                $currentSpan = Span::fromContext(Context::getCurrent());
-                echo 'Trace ID: ' . $currentSpan->getContext()->getTraceId();
-                echo ' | Span ID: ' . $currentSpan->getContext()->getSpanId();
+
 
                 return [$request];
             },
             post: static function (Application $app, array $params, ?Response $response, ?Throwable $exception) {
                 $scope = Context::storage()->scope();
+
+                $currentSpan = Span::fromContext(Context::getCurrent());
+                echo 'Trace ID: ' . $currentSpan->getContext()->getTraceId();
+                echo ' | Span ID: ' . $currentSpan->getContext()->getSpanId();
                 if (!$scope) {
                     return;
                 }
