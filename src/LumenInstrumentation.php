@@ -17,7 +17,7 @@ use Throwable;
 
 class LumenInstrumentation
 {
-    public const NAME = 'lumen';
+    public const NAME = 'lumen-test';
 
     public static function registerWatchers(Application $app, Watcher $watcher)
     {
