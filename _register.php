@@ -16,8 +16,8 @@ if (extension_loaded('opentelemetry') === false) {
     return;
 }
 
-$composerAttributes = new Composer();
-$serviceName = $composerAttributes->getResource()->getAttributes()->get('service.name');
-putenv('OTEL_SERVICE_NAME=' . $serviceName);
+//$composerAttributes = new Composer();
+//$serviceName = $composerAttributes->getResource()->getAttributes()->get('service.name');
+//putenv('OTEL_SERVICE_NAME=' . $serviceName);
 
 LumenInstrumentation::register();
