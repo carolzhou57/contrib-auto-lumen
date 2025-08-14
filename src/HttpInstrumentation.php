@@ -41,6 +41,19 @@ class HttpInstrumentation
             return;
         }
 
+        // if from x-ray convert the header to w3c
+        if ($xrayHeader = $request->header('X-Amzn-Trace-Id')) {
+            if (!$request->headers->has('traceparent')) {
+                $traceparent = convertXRayToTraceparent($xrayHeader);
+                if ($traceparent) {
+                // Inject into request headers
+                    $request->headers->set('traceparent', $traceparent);
+                    // Also set in $_SERVER so it's available globally (optional)
+                    $_SERVER['HTTP_TRACEPARENT'] = $traceparent;
+                }
+            }
+        }
+
         hook(
             Application::class,
             'run',
@@ -141,5 +154,35 @@ class HttpInstrumentation
         }
 
         return '';
+    }
+
+    function convertXRayToTraceparent(string $xRayHeader): ?string
+    {
+        preg_match('/Root=([^\;]+)/', $xRayHeader, $rootMatch);
+        preg_match('/Parent=([^\;]+)/', $xRayHeader, $parentMatch);
+        preg_match('/Sampled=([01])/', $xRayHeader, $sampledMatch);
+    
+        if (empty($rootMatch[1]) || empty($parentMatch[1])) {
+            return null;
+        }
+    
+        $rootParts = explode('-', $rootMatch[1]);
+        if (count($rootParts) !== 3) {
+            return null;
+        }
+    
+        $traceId = $rootParts[1] . $rootParts[2];
+        if (!ctype_xdigit($traceId) || strlen($traceId) !== 32) {
+            return null;
+        }
+    
+        $parentId = $parentMatch[1];
+        if (!ctype_xdigit($parentId) || strlen($parentId) !== 16) {
+            return null;
+        }
+    
+        $sampled = (!empty($sampledMatch[1]) && $sampledMatch[1] === '1') ? '01' : '00';
+    
+        return "00-$traceId-$parentId-$sampled";
     }
 }
