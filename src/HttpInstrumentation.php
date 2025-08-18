@@ -44,7 +44,7 @@ class HttpInstrumentation
         // if from x-ray convert the header to w3c
         if ($xrayHeader = $request->header('X-Amzn-Trace-Id')) {
             if (!$request->headers->has('traceparent')) {
-                $traceparent = convertXRayToTraceparent($xrayHeader);
+                $traceparent = self::convertXRayToTraceparent($xrayHeader);
                 if ($traceparent) {
                 // Inject into request headers
                     $request->headers->set('traceparent', $traceparent);
