@@ -156,7 +156,7 @@ class HttpInstrumentation
         return '';
     }
 
-    function convertXRayToTraceparent(string $xRayHeader): string
+    private static function convertXRayToTraceparent(string $xRayHeader): string
     {
         preg_match('/Root=([^\;]+)/', $xRayHeader, $rootMatch);
         preg_match('/Parent=([^\;]+)/', $xRayHeader, $parentMatch);
